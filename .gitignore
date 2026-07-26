@@ -1,1 +1,5 @@
 /**/__pycache__
+/dist/simplecolorlogger-*
+/simplecolorlogger.egg-info
+/dist
+/build

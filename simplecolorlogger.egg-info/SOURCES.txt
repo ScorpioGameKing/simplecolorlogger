@@ -1,9 +1,0 @@
-README.md
-setup.py
-simplecolorlogger/__init__.py
-simplecolorlogger/main.py
-simplecolorlogger.egg-info/PKG-INFO
-simplecolorlogger.egg-info/SOURCES.txt
-simplecolorlogger.egg-info/dependency_links.txt
-simplecolorlogger.egg-info/requires.txt
-simplecolorlogger.egg-info/top_level.txt
