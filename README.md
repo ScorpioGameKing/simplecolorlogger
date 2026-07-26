@@ -42,7 +42,7 @@ minimum provide the raw text to log. The full option list is as follows:
         - The raw text to log 
         - No Default
     - level: int
-        - The log level of the message. 0 in this context uses the Logger's current maxium
+        - The log level of the message. 0 in this context uses the Logger's current maximum
         - default: 0
     - class_name: str
         - The name of the class the log is being sent from

@@ -90,7 +90,7 @@ class Logger():
         Used to both print and write a log message to the console and a file.
         text: str -> The raw text to log 
             No Default
-        level: int -> The log level of the message. 0 in this context uses the Logger's current maxium
+        level: int -> The log level of the message. 0 in this context uses the Logger's current maximum
             default: 0
         class_name: str -> The name of the class the log is being sent from
             default: "Logger"
