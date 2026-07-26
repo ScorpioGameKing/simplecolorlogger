@@ -1,18 +1,16 @@
 {
-  description = "A very basic flake";
+  description = "simplecolorlogger Development Flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   };
 
   outputs = { self, nixpkgs }: 
-
     let
       pkgs = import nixpkgs  {
         system = "x86_64-linux";
       };
     in
-
     {
 
     devShells.x86_64-linux.default = pkgs.mkShell {
@@ -26,7 +24,7 @@
         ]))
       ];
       shellHook = ''
-          echo Python Development Flake Enabled
+          echo simplecolorlogger Development Flake Enabled
         '';
     };
   };
