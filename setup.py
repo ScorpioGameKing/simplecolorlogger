@@ -1,10 +1,15 @@
 from setuptools import setup, find_packages
 
+with open('README.md', "r") as f:
+    description = f.read()
+
 setup(
     name='simplecolorlogger', 
-    version='0.1', 
+    version='0.2', 
     packages=find_packages(), 
     install_requires=[
         'colorama>=0.4.6'
     ],
+    long_desccription=description,
+    long_description_content_type="text/markdown",
 )
