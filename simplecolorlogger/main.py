@@ -12,22 +12,26 @@ class Logger():
         default = 0
     file_logging: bool -> Enable/Disable writing log file 
         default = False
+    msg_time_stamping: bool -> Enable/Disable prepending a timestamp to log messages
+        default = True
+    log_date_stamping: bool -> Enable/Disable appending a datestamp to log files 
+        default = True
+    log_time_stamping: bool -> Enable/Disable appending a timestamp to log files 
+        default = True
     log_save_location: str -> A relative path to the location where logs are save
         default = "./logs"
     log_save_name: str -> The generic name for the written log files 
         default = "log"
-    log_time_stamping: bool -> Enable/Disable appending a datestamp to log files 
-        default = True
-    msg_time_stamping: bool -> Enable/Disable prepending a timestamp to log messages
-        default = True
     """
      
     _logging_level: int = 0
     _file_logging: bool = False
+    _msg_time_stamping: bool = True
+    _log_date_stamping: bool = True
+    _log_time_stamping: bool = True
+    _log_time: str = ""
     _log_save_location: str = "./logs"
     _log_save_name: str = "log"
-    _log_date_stamping: bool = True
-    _msg_time_stamping: bool = True
 
     _lb: str = f"{Style.BRIGHT}{Fore.LIGHTCYAN_EX}[{Style.RESET_ALL}"
     _rb: str = f"{Style.BRIGHT}{Fore.LIGHTCYAN_EX}]{Style.RESET_ALL}"
@@ -40,13 +44,25 @@ class Logger():
     _lv4: str = f"{_lb}{Style.BRIGHT}{Fore.RED}ERROR{Style.RESET_ALL}{_rb}{_bar}"
     _lv5: str = f"{_lb}{Style.BRIGHT}{Fore.MAGENTA}DEBUG{Style.RESET_ALL}{_rb}{_bar}"
 
-    def __init__(self, logging_level: int, file_logging: bool = False, msg_time_stamping: bool = True, log_date_stamping: bool = True, log_save_location: str = "", log_save_name: str = "") -> None:
+    def __init__(
+            self, 
+            logging_level: int, 
+            file_logging: bool = False, 
+            msg_time_stamping: bool = True, 
+            log_date_stamping: bool = True,
+            log_time_stamping: bool = True, 
+            log_save_location: str = "", 
+            log_save_name: str = ""
+            ) -> None:
         self._logging_level = logging_level
         self._file_logging = file_logging
-        self._log_date_stamping = log_date_stamping
         self._msg_time_stamping = msg_time_stamping
-        if not log_save_location == "": self._log_save_location = log_save_location
-        if not log_save_name == "": self._log_save_name = log_save_name
+        self._log_date_stamping = log_date_stamping
+        self.update_log_time_stamping(log_time_stamping)
+        if not log_save_location == "": 
+            self._log_save_location = log_save_location
+        if not log_save_name == "": 
+            self._log_save_name = log_save_name
         just_fix_windows_console()
 
     def update_logging_level(self, logging_level: int) -> None:
@@ -66,6 +82,16 @@ class Logger():
         Update whether to append a datestamp to log files 
         """
         self._log_date_stamping = log_date_stamping
+    
+    def update_log_time_stamping(self, log_time_stamping: bool) -> None:
+        """
+        Update whether to append a timestamp to log files 
+        """
+        self._log_time_stamping = log_time_stamping
+        if self._log_time_stamping:
+            self._log_time = f"-{strftime("%Y-%m-%d", gmtime())}"
+        else:
+            self._log_time = ""
 
     def update_msg_time_stamping(self, msg_time_stamping: bool) -> None:
         """
@@ -97,11 +123,13 @@ class Logger():
         method_name: str -> The name of the method the log is being sent from
             default: "log_message"
         """
-        if level == 0: level = self._logging_level
+        if level == 0: 
+            level: int = self._logging_level
         if level <= self._logging_level and not self._logging_level == 0:
-            _msg_stamp = ""
-            _base = f"{self._lb}{Style.BRIGHT}{Fore.LIGHTGREEN_EX}{class_name}{Style.RESET_ALL}{self._col}{Style.BRIGHT}{Fore.LIGHTWHITE_EX}{method_name}{Style.RESET_ALL}{self._rb}{self._arw}{text}"
-            if self._msg_time_stamping: _msg_stamp = f"{datetime.now().strftime("[%I:%M:%S] :: ")}"
+            _msg_stamp: str = ""
+            _base: str = f"{self._lb}{Style.BRIGHT}{Fore.LIGHTGREEN_EX}{class_name}{Style.RESET_ALL}{self._col}{Style.BRIGHT}{Fore.LIGHTWHITE_EX}{method_name}{Style.RESET_ALL}{self._rb}{self._arw}{text}"
+            if self._msg_time_stamping: 
+                _msg_stamp: str = f"{datetime.now().strftime("[%I:%M:%S] :: ")}"
             match level:
                 case 1:
                     sys.stdout.write(f"{_msg_stamp}{self._lv1}{_base}\n")
@@ -117,13 +145,14 @@ class Logger():
                     sys.stdout.write(f"{_msg_stamp}{self._lv1}{_base}\n")
             if self._file_logging:
                 _file_stamp = "" 
-                if self._log_date_stamping: _file_stamp = f"-{strftime("%Y-%m-%d", gmtime())}"
+                if self._log_date_stamping: 
+                    _file_stamp: str = f"-{strftime("%Y-%m-%d", gmtime())}"
                 if path.exists(f"{self._log_save_location}/"):
-                    if path.exists(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}"): 
-                        remove(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}")
+                    if path.exists(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}"): 
+                        remove(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}")
                 else:
                     makedirs(f"{self._log_save_location}/")
-                with open(f"{self._log_save_location}/{self._log_save_name}{_file_stamp}", "a") as log_file:
+                with open(f"{self._log_save_location}/{self._log_save_name}{_file_stamp}{self._log_time}", "a") as log_file:
                     match level:
                         case 1:
                             log_file.write(f"{_msg_stamp}[INFO] | [{class_name} : {method_name}] -> {text}\n")
