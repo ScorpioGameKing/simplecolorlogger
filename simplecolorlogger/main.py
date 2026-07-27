@@ -113,6 +113,8 @@ class Logger():
                     sys.stdout.write(f"{_msg_stamp}{self._lv4}{_base}\n")
                 case 5:
                     sys.stdout.write(f"{_msg_stamp}{self._lv5}{_base}\n")
+                case _:
+                    sys.stdout.write(f"{_msg_stamp}{self._lv1}{_base}\n")
             if self._file_logging:
                 _file_stamp = "" 
                 if self._log_date_stamping: _file_stamp = f"-{strftime("%Y-%m-%d", gmtime())}"
@@ -124,12 +126,14 @@ class Logger():
                 with open(f"{self._log_save_location}/{self._log_save_name}{_file_stamp}", "a") as log_file:
                     match level:
                         case 1:
-                                log_file.write(f"{_msg_stamp}[INFO] | [{class_name} : {method_name}] -> {text}\n")
+                            log_file.write(f"{_msg_stamp}[INFO] | [{class_name} : {method_name}] -> {text}\n")
                         case 2:
-                                log_file.write(f"{_msg_stamp}[WARNING] | [{class_name} : {method_name}] -> {text}\n")
+                            log_file.write(f"{_msg_stamp}[WARNING] | [{class_name} : {method_name}] -> {text}\n")
                         case 3:
-                                log_file.write(f"{_msg_stamp}[CRITICAL] | [{class_name} : {method_name}] -> {text}\n")
+                            log_file.write(f"{_msg_stamp}[CRITICAL] | [{class_name} : {method_name}] -> {text}\n")
                         case 4:
-                                log_file.write(f"{_msg_stamp}[ERROR] | [{class_name} : {method_name}] -> {text}\n")
+                            log_file.write(f"{_msg_stamp}[ERROR] | [{class_name} : {method_name}] -> {text}\n")
                         case 5:
-                                log_file.write(f"{_msg_stamp}[DEBUG] | [{class_name} : {method_name}] -> {text}\n")
+                            log_file.write(f"{_msg_stamp}[DEBUG] | [{class_name} : {method_name}] -> {text}\n")
+                        case _:
+                            log_file.write(f"{_msg_stamp}[INFO] | [{class_name} : {method_name}] -> {text}\n")
