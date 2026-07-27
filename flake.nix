@@ -18,9 +18,7 @@
         (pkgs.python3.withPackages (python-pkgs: [
           python-pkgs.pip
           python-pkgs.colorama
-          python-pkgs.setuptools
-          python-pkgs.wheel
-          python-pkgs.twine
+          python-pkgs.build
         ]))
       ];
       shellHook = ''
