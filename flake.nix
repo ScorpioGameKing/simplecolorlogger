@@ -16,7 +16,6 @@
     devShells.x86_64-linux.default = pkgs.mkShell {
       packages = [
         (pkgs.python3.withPackages (python-pkgs: [
-          python-pkgs.pip
           python-pkgs.colorama
           python-pkgs.build
         ]))
