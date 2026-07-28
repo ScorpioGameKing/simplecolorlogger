@@ -9,48 +9,45 @@ To install simplecolorlogger you can run the following command to download it th
 
 ## How to Use
 
-Import the package as follows, it only provides one class.
+Below is a small python program demonstrating all of the steps required to create and use a logger
+as well as each of the included update methods.
 
-`from simplecolorlogger import Logger`
+```py
+from simplecolorlogger import Logger
 
-Once imported you will need to create an instance of the logger. When creating the 
-logger you can provide the following values to configure it:
+if __name__ == "__main__":
 
-    - logging_level: int -> [0: Disabled, 1: INFO, 2: WARNING, 3: CRITICAL, 4: ERROR, 5: DEBUG]
-        - Used to set the maximum logging level to be used.
-        - default = 0
-    - file_logging: bool
-        - Enable/Disable writing log file 
-        - default = False
-    - log_save_location: str
-        - A relative path to the location where logs are save
-        - default = "./logs"
-    - log_save_name: str
-        - The generic name for the written log files 
-        - default = "log"
-    - log_time_stamping: bool
-        - Enable/Disable appending a datestamp to log files 
-        - default = True
-    - msg_time_stamping: bool
-        - Enable/Disable prepending a timestamp to log messages
-        - default = True
+    logger: Logger = Logger(5) # Logging Level defaults 0 so either set here or with the method below
+    # logger.update_logging_level(5) # [0: Disabled, 1: INFO, 2: WARNING, 3: CRITICAL, 4: ERROR, 5: DEBUG]
 
-Once the logger has been setup you can simply call `logger.log_message()`. You will need to at 
-minimum provide the raw text to log. The full option list is as follows:
+    # All optional settings can be set when creating a logger or through these funtions
 
-    - text: str
-        - The raw text to log 
-        - No Default
-    - level: int
-        - The log level of the message. 0 in this context uses the Logger's current maximum
-        - default: 0
-    - class_name: str
-        - The name of the class the log is being sent from
-        - default: "Logger"
-    - method_name: str
-        - The name of the method the log is being sent from
-        - default: "log_message"
+    logger.update_msg_class_name("Test Class")  # Only needed if user wants specificity, defaults "Logger"
+    logger.update_msg_method_name("Test Method") # Only needed if user wants specificity, defaults "log_message"
+    
+    # logger.update_file_logging(False)  # Whether to save a log file, defaults False
+    # logger.update_log_date_stamping(True)  # Whether to append the date, defaults True
+    # logger.update_log_time_stamping(True)  # Whether to append the time, defaults True
+    # logger.update_log_compact_stamp(False) # True: [2026-07-27]-[08-00-00] False: 20260727-080000
+    # logger.update_log_save_name("log") # Log file name, defaults "log"
+    # logger.update_log_save_location("./logs") # Log file save location, defaults "./logs"
+    # logger.update_msg_time_stamping(True) # Whether to append the time, defaults True
 
-There are several helper methods also provided for updating the logger options. Each follows
-the same naming convention of `update_{option}(new_option_value)`, replacing `{option}` with 
-the option's name i.e `update_file_logging(True)`
+    # To use pass your message and the level it logs at
+    logger.log_message("This is a test log", 1)
+    logger.log_message("This is a test log", 2)
+    logger.log_message("This is a test log", 3)
+    logger.log_message("This is a test log", 4)
+    logger.log_message("This is a test log", 5)
+```
+
+The output of this program is below (Color is not added to the text)
+
+```
+❯ python test.py 
+[08:07:50] :: [INFO] | [Test Class : Test Method] -> This is a test log
+[08:07:50] :: [WARNING] | [Test Class : Test Method] -> This is a test log
+[08:07:50] :: [CRITICAL] | [Test Class : Test Method] -> This is a test log
+[08:07:50] :: [ERROR] | [Test Class : Test Method] -> This is a test log
+[08:07:50] :: [DEBUG] | [Test Class : Test Method] -> This is a test log
+```
