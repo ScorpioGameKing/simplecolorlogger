@@ -179,28 +179,34 @@ class Logger():
                 case _:
                     sys.stdout.write(f"{_msg_stamp}{self._lv1}{_base}\n")
             if self._file_logging:
-                _file_stamp = "" 
-                if self._log_date_stamping:
-                    if self._log_compact_stamp:
-                        _file_stamp: str = f"-{strftime("%Y%m%d", gmtime())}"
-                    else:
-                        _file_stamp: str = f"-{strftime("[%Y-%m-%d]", gmtime())}"
-                if path.exists(f"{self._log_save_location}/"):
-                    if path.exists(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}"): 
-                        remove(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}")
-                else:
-                    makedirs(f"{self._log_save_location}/")
-                with open(f"{self._log_save_location}/{self._log_save_name}{_file_stamp}{self._log_time}", "a") as log_file:
-                    match level:
-                        case 1:
-                            log_file.write(f"{_msg_stamp}[INFO] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
-                        case 2:
-                            log_file.write(f"{_msg_stamp}[WARNING] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
-                        case 3:
-                            log_file.write(f"{_msg_stamp}[CRITICAL] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
-                        case 4:
-                            log_file.write(f"{_msg_stamp}[ERROR] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
-                        case 5:
-                            log_file.write(f"{_msg_stamp}[DEBUG] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
-                        case _:
-                            log_file.write(f"{_msg_stamp}[INFO] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                self.log_file(text, level)
+
+    def log_file(self, text: str, level: int) -> None:
+        _file_stamp: str = "" 
+        if self._log_date_stamping:
+            if self._log_compact_stamp:
+                _file_stamp: str = f"-{strftime("%Y%m%d", gmtime())}"
+            else:
+                _file_stamp: str = f"-{strftime("[%Y-%m-%d]", gmtime())}"
+        _msg_stamp: str = ""
+        if self._msg_time_stamping: 
+            _msg_stamp: str = f"{datetime.now().strftime("[%I:%M:%S] :: ")}"
+        if path.exists(f"{self._log_save_location}/"):
+            if path.exists(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}"): 
+                remove(f"{self._log_save_location}/{self._log_save_location}{_file_stamp}{self._log_time}")
+        else:
+            makedirs(f"{self._log_save_location}/")
+        with open(f"{self._log_save_location}/{self._log_save_name}{_file_stamp}{self._log_time}", "a") as file:
+            match level:
+                case 1:
+                    file.write(f"{_msg_stamp}[INFO] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                case 2:
+                    file.write(f"{_msg_stamp}[WARNING] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                case 3:
+                    file.write(f"{_msg_stamp}[CRITICAL] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                case 4:
+                    file.write(f"{_msg_stamp}[ERROR] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                case 5:
+                    file.write(f"{_msg_stamp}[DEBUG] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")
+                case _:
+                    file.write(f"{_msg_stamp}[INFO] | [{self._msg_class_name} : {self._msg_method_name}] -> {text}\n")

@@ -3,4 +3,5 @@
 /simplecolorlogger.egg-info
 /dist
 /build
+/logs
 /test.py
