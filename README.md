@@ -33,12 +33,16 @@ if __name__ == "__main__":
     # logger.update_log_save_location("./logs") # Log file save location, defaults "./logs"
     # logger.update_msg_time_stamping(True) # Whether to append the time, defaults True
 
-    # To use pass your message and the level it logs at
+    # To use pass your message and the level it logs at. If File logging is enabled it
+    # will also save the log to the log file
     logger.log_message("This is a test log", 1)
     logger.log_message("This is a test log", 2)
     logger.log_message("This is a test log", 3)
     logger.log_message("This is a test log", 4)
     logger.log_message("This is a test log", 5)
+
+    # You can also explictly log to only a file by using the following
+    logger.log_file("This is ONLY logged to a file", 1)
 ```
 
 The output of this program is below (Color is not added to the text)
